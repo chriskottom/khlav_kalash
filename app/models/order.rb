@@ -11,6 +11,7 @@ class Order < ApplicationRecord
   private
 
   def set_defaults
+    self.amount_cents = UNIT_PRICE_CENTS
     self.number = next_number
     self.permalink = SecureRandom.hex(20)
 
