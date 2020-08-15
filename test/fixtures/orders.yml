@@ -1,19 +1,21 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  amount_cents: 1
-  first_name: MyString
-  last_name: MyString
-  country: MyString
-  email_address: MyString
-  number: MyString
-  permalink: MyString
+homer:
+  amount_cents: 299
+  first_name: Homer
+  last_name: Simpson
+  postal_code: 55555
+  country: Spain
+  email_address: chunkylover53@aol.com
+  number: '000000000000'
+  permalink: <%= SecureRandom.hex(20) %>
 
-two:
-  amount_cents: 1
-  first_name: MyString
-  last_name: MyString
-  country: MyString
-  email_address: MyString
-  number: MyString
-  permalink: MyString
+flanders:
+  amount_cents: 299
+  first_name: Ned
+  last_name: Flanders
+  postal_code: 55555
+  country: United States
+  email_address: ned.flanders@springface.com
+  number: '000000000001'
+  permalink: <%= SecureRandom.hex(20) %>
