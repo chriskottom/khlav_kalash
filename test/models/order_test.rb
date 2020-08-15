@@ -36,4 +36,14 @@ class OrderTest < ActiveSupport::TestCase
     assert @order.invalid?
     assert @order.errors.added? :email_address, :blank
   end
+
+  test "is invalid when #email_address is not in a valid format" do
+    @order.email_address = 'Homer.Simpson'
+    assert @order.invalid?
+    assert @order.errors.added? :email_address, "Invalid email format"
+
+    @order.email_address = '@HomerSimpson'
+    assert @order.invalid?
+    assert @order.errors.added? :email_address, "Invalid email format"
+  end
 end

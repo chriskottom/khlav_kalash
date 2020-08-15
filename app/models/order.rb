@@ -1,10 +1,12 @@
 class Order < ApplicationRecord
-  validates :first_name, :country, :postal_code, :email_address, presence: true
-
-  before_create :set_defaults
-
+  EMAIL_REGEXP = /\A[^@\s]+@[^@\s]+\z/
   UNIT_PRICE_CENTS = 299
   CURRENCY = 'USD'.freeze
+
+  validates :first_name, :country, :postal_code, :email_address, presence: true
+  validates :email_address, format: { with: EMAIL_REGEXP, message: 'Invalid email format' }
+
+  before_create :set_defaults
 
   def price
     Money.new(UNIT_PRICE_CENTS, CURRENCY)
