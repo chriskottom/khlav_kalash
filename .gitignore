@@ -4,8 +4,9 @@
 # or operating system, you probably want to add a global ignore instead:
 #   git config --global core.excludesfile '~/.gitignore_global'
 
-# Ignore bundler config.
+# Ignore bundler config and dependencies.
 /.bundle
+/vendor/bundle
 
 # Ignore the default SQLite database.
 /db/*.sqlite3
@@ -29,3 +30,8 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+
+# Ignore development tool artifacts.
+*.sublime-project
+*.sublime-workspace
+
