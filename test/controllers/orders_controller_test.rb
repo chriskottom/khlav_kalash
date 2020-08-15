@@ -2,7 +2,7 @@ require 'test_helper'
 
 class OrdersControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @credentials = ActionController::HttpAuthentication::Basic.encode_credentials('admin', 'password')
+    @credentials = ActionController::HttpAuthentication::Basic.encode_credentials(AUTH_USERNAME, AUTH_PASSWORD)
     @order = orders(:homer)
   end
 

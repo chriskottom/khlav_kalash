@@ -3,8 +3,8 @@ require_relative '../config/environment'
 require 'rails/test_help'
 
 class ActiveSupport::TestCase
-  AUTH_USERNAME = "admin"
-  AUTH_PASSWORD = "password"
+  AUTH_USERNAME = Rails.application.credentials.admin[:username]
+  AUTH_PASSWORD = Rails.application.credentials.admin[:password]
 
   fixtures :all
 end
