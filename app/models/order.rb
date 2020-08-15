@@ -1,4 +1,6 @@
 class Order < ApplicationRecord
+  validates :first_name, :country, :postal_code, :email_address, presence: true
+
   before_create :set_defaults
 
   UNIT_PRICE_CENTS = 299
