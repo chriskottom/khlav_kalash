@@ -12,6 +12,10 @@ class Order < ApplicationRecord
     Money.new(UNIT_PRICE_CENTS, CURRENCY)
   end
 
+  def payment_intent
+    @payment_intent ||= find_or_create_payment_intent
+  end
+
   private
 
   def set_defaults
@@ -27,5 +31,16 @@ class Order < ApplicationRecord
   def next_number
     current = self.class.reorder('number desc').first.try(:number) || '000000000000'
     current.next
+  end
+
+  def find_or_create_payment_intent
+    if payment_intent_id
+      Stripe::PaymentIntent.retrieve(payment_intent_id)
+    else
+      Stripe::PaymentIntent.create({
+        amount: UNIT_PRICE_CENTS,
+        currency: CURRENCY
+      })
+    end
   end
 end

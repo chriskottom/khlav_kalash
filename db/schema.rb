@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_15_023624) do
+ActiveRecord::Schema.define(version: 2020_08_15_072229) do
 
   create_table "orders", force: :cascade do |t|
     t.integer "amount_cents"
@@ -27,7 +27,9 @@ ActiveRecord::Schema.define(version: 2020_02_15_023624) do
     t.string "permalink"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "payment_intent_id"
     t.index ["number"], name: "index_orders_on_number", unique: true
+    t.index ["payment_intent_id"], name: "index_orders_on_payment_intent_id", unique: true
     t.index ["permalink"], name: "index_orders_on_permalink", unique: true
   end
 

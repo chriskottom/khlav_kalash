@@ -46,4 +46,29 @@ class OrderTest < ActiveSupport::TestCase
     assert @order.invalid?
     assert @order.errors.added? :email_address, "Invalid email format"
   end
+
+  test 'attempts to fetch Stripe::PaymentIntent when id is known' do
+    intent_id = 'pi_xxxxxxxxxxx'
+
+    retrieve_mock = Minitest::Mock.new
+    retrieve_mock.expect(:call, nil, [intent_id])
+
+    Stripe::PaymentIntent.stub :retrieve, retrieve_mock do
+      @order.payment_intent_id = intent_id
+      @order.payment_intent
+    end
+
+    retrieve_mock.verify
+  end
+
+  test 'attempts to create Stripe::PaymentIntent when id is not known' do
+    create_mock = Minitest::Mock.new
+    create_mock.expect(:call, nil, [{ amount: 299, currency: 'USD' }])
+
+    Stripe::PaymentIntent.stub :create, create_mock do
+      @order.payment_intent
+    end
+
+    create_mock.verify
+  end
 end
