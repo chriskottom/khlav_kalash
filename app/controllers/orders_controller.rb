@@ -17,7 +17,8 @@ class OrdersController < ApplicationController
 
   # GET /orders/new
   def new
-    @order = Order.new
+    @order = Order.new(amount_cents: Order::UNIT_PRICE_CENTS)
+    @payment_intent = @order.payment_intent
   end
 
   # GET /orders/1/edit
@@ -76,6 +77,8 @@ class OrdersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def order_params
-      params.require(:order).permit(:amount_cents, :first_name, :last_name, :street_line_1, :street_line_2, :postal_code, :city, :region, :country, :email_address, :number, :permalink)
+      params.require(:order).permit(
+        :amount_cents, :first_name, :last_name, :street_line_1, :street_line_2,
+        :postal_code, :city, :region, :country, :email_address, :payment_intent_id)
     end
 end

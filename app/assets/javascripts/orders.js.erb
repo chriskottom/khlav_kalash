@@ -1,0 +1,63 @@
+var stripePublishableKey = '<%= Rails.application.credentials.stripe[:publishable_key] %>';
+var stripe = Stripe(stripePublishableKey);
+var elements = stripe.elements();
+var card = elements.create('card', { hidePostalCode: true });
+
+document.addEventListener('turbolinks:load', function (event) {
+  var cardElement = document.getElementById('card-element');
+
+  if (cardElement) {
+    card.mount('#card-element');
+
+    var paymentForm = document.querySelector('form');
+    var submitButton = paymentForm.querySelector('input[type=submit]');
+    var cardErrors = document.getElementById('card-errors');
+
+    card.on('change', function (error) {
+      if (error && error.error && error.error.message) {
+        cardErrors.textContent = error.error.message;
+        cardErrors.classList.add('visible');
+      } else {
+        cardErrors.classList.remove('visible');
+        cardErrors.textContent = '';
+      }
+    });
+
+    paymentForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+
+      submitButton.disabled = true;
+      submitButton.value = 'Processing payment...';
+
+      paymentDetails = {
+        payment_method: {
+          card: card
+        }
+      };
+
+      var clientSecret = submitButton.getAttribute('data-secret')
+      stripe.confirmCardPayment(clientSecret, paymentDetails)
+        .then(function (result) {
+          console.log(result);
+
+          if (result.error) {
+            cardErrors.textContent = result.error.message;
+            cardErrors.classList.add('visible');
+          } else if (result.paymentIntent.status == 'succeeded') {
+            handlePaymentIntent(result.paymentIntent, paymentForm);
+          }
+        });
+    });
+
+    function handlePaymentIntent(paymentIntent, form) {
+      var hiddenInput = document.createElement('input');
+      hiddenInput.setAttribute('type', 'hidden');
+      hiddenInput.setAttribute('name', 'order[payment_intent_id]');
+      hiddenInput.setAttribute('value', paymentIntent.id);
+
+      form.appendChild(hiddenInput);
+
+      form.submit();
+    }
+  }
+});

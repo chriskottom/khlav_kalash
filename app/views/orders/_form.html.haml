@@ -36,5 +36,14 @@
     = form.label :email_address
     = form.text_field :email_address
 
-  .actions
-    = form.submit "Pay #{@order.price.format}"
+  - if action_name == 'new'
+    .field{ style: 'max-width: 400px' }
+      = label_tag 'card-element', 'Credit card'
+      #card-element
+      #card-errors{role: 'alert'}
+
+    .actions
+      = form.submit "Pay #{@order.price.format}", data: { secret: @payment_intent.client_secret }
+  - else
+    .actions
+      = form.submit "Update order"

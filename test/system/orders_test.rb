@@ -2,7 +2,13 @@ require "application_system_test_case"
 
 class OrdersTest < ApplicationSystemTestCase
   setup do
+    StripeMock.start
+
     @order = orders(:homer)
+  end
+
+  teardown do
+    StripeMock.stop
   end
 
   test "visiting the index" do
@@ -19,6 +25,14 @@ class OrdersTest < ApplicationSystemTestCase
     fill_in "First name", with: @order.first_name
     fill_in "Last name", with: @order.last_name
     fill_in "Postal code", with: @order.postal_code
+
+    stripe_iframe = all('#card-element iframe').last
+    Capybara.within_frame stripe_iframe do
+    fill_in "Card number", with: '4242424242424242'
+      fill_in "MM/YY", with: '0133'
+      fill_in "CVC", with: '111'
+    end
+
     click_on "Pay $2.99"
 
     assert_text "Order was successfully created"
@@ -33,7 +47,7 @@ class OrdersTest < ApplicationSystemTestCase
     fill_in "Email address", with: @order.email_address
     fill_in "First name", with: @order.first_name
     fill_in "Last name", with: @order.last_name
-    click_on "Pay $2.99"
+    click_on "Update order"
 
     assert_text "Order was successfully updated"
     click_on "Back"

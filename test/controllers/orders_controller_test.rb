@@ -2,8 +2,14 @@ require 'test_helper'
 
 class OrdersControllerTest < ActionDispatch::IntegrationTest
   setup do
+    StripeMock.start
+
     @credentials = ActionController::HttpAuthentication::Basic.encode_credentials(AUTH_USERNAME, AUTH_PASSWORD)
     @order = orders(:homer)
+  end
+
+  teardown do
+    StripeMock.stop
   end
 
   test "should get index" do
