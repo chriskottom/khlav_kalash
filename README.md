@@ -1,5 +1,9 @@
 # README
 
+## Solution
+
+See the documentation and commentary in [SOLUTION.md](SOLUTION.md).
+
 ## We sell khlav kalash, only [khlav kalash](https://www.youtube.com/watch?v=4NFv5IGP2uA), $2.99 per unit
 
 For decades we've been selling khlav kalash on the street but now, we are preparing our biggest leap ever… Selling khlav kalash online!
