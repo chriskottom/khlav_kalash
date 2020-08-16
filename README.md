@@ -32,3 +32,26 @@ Start the puma server with
 ```
 rails s
 ```
+
+Run database migrations with
+```
+rails db:migrate
+```
+
+Finally, you'll need to set up secure credentials for your own instance of the
+app by deleting the file at `config/credentials.yml.enc`, running
+`rails credentials:edit` and editing the file to include the following added
+entries.
+
+```
+admin:
+  username: admin
+  password: password
+
+stripe:
+  publishable_key: YOUR_STRIPE_PUBLISHABLE_KEY
+  secret_key: YOUR_STRIPE_SECRET_KEY
+
+# Used as the base secret for all MessageVerifiers in Rails, including the one protecting cookies.
+secret_key_base: ...
+```
